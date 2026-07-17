@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLAM-CMP 2027 — School on Machine Learning &amp; AI for Many-body and Condensed Matter Physics</title>
+<meta name="description" content="SLAM-CMP 2027 — a Max Planck 'Bridging Minds' school on Machine Learning and AI for Many-body and Condensed Matter Physics, hosted at the University of Dschang, Cameroon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink: #0e1224;
+    --ink-2: #171c37;
+    --ink-3: #202650;
+    --paper: #f6f1e4;
+    --paper-dim: #e8e0cc;
+    --gold: #d9a544;
+    --gold-soft: #e9c67c;
+    --forest: #3c8562;
+    --forest-soft: #63a884;
+    --clay: #c1484c;
+    --text-dim: #b9bfdb;
+    --text-dimmer: #7d84a8;
+    --line: rgba(217,165,68,0.22);
+    --radius: 2px;
+    --max: 1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text-dim);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Newsreader', serif;
+    color:var(--paper);
+    font-weight:500;
+    margin:0;
+    letter-spacing:0.01em;
+  }
+
+  a{color:inherit;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    font-size:0.72rem;
+    color:var(--gold-soft);
+  }
+
+  .skip-link{
+    position:absolute; left:-999px; top:0;
+    background:var(--gold); color:var(--ink); padding:10px 16px; z-index:200;
+    font-family:'IBM Plex Mono',monospace; font-size:0.85rem;
+  }
+  .skip-link:focus{ left:12px; top:12px; }
+
+  a:focus-visible, button:focus-visible, .tab:focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ---------- lattice background texture ---------- */
+  .lattice-bg{
+    position:relative;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(217,165,68,0.16) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  /* ---------- layout helpers ---------- */
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
+  section{ padding: 96px 0; }
+  @media (max-width: 720px){ section{ padding:64px 0; } }
+
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head h2{ font-size: clamp(1.9rem, 3.4vw, 2.6rem); margin-top:10px; }
+  .section-head p{ color:var(--text-dim); margin-top:14px; font-size:1.02rem; }
+
+  /* ---------- nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:100;
+    background:rgba(14,18,36,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:var(--max); margin:0 auto;
+  }
+  .brandmark{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+  .brandmark .mark{
+    width:38px; height:38px; border:1px solid var(--gold-soft); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--gold-soft); letter-spacing:0.03em;
+  }
+  .brandmark .name{ font-family:'Newsreader',serif; color:var(--paper); font-size:1.15rem; }
+  .brandmark .name em{ color:var(--gold-soft); font-style:normal; }
+
+  nav.links{ display:flex; gap:28px; align-items:center; }
+  nav.links a{
+    text-decoration:none; color:var(--text-dim); font-size:0.92rem;
+    font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em;
+    padding-bottom:3px; border-bottom:1px solid transparent;
+    transition:border-color .2s, color .2s;
+  }
+  nav.links a:hover{ color:var(--gold-soft); border-color:var(--gold-soft); }
+  .nav-cta{
+    background:var(--gold); color:var(--ink) !important; padding:9px 16px;
+    border-radius:var(--radius); font-weight:600 !important;
+  }
+  .nav-cta:hover{ background:var(--gold-soft); border-color:transparent !important; }
+
+  .burger{ display:none; background:none; border:1px solid var(--line); color:var(--paper); padding:8px 10px; font-family:'IBM Plex Mono',monospace; }
+
+  @media (max-width: 860px){
+    nav.links{
+      position:absolute; top:100%; left:0; right:0; background:var(--ink-2);
+      flex-direction:column; align-items:flex-start; padding:18px 28px; gap:16px;
+      border-bottom:1px solid var(--line);
+      display:none;
+    }
+    nav.links.open{ display:flex; }
+    .burger{ display:block; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; overflow:hidden;
+    padding: 120px 0 90px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap{ position:relative; z-index:2; }
+  .hero-tag{ display:flex; gap:10px; align-items:center; margin-bottom:26px; flex-wrap:wrap;}
+  .pill{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.08em;
+    border:1px solid var(--line); color:var(--gold-soft); padding:6px 12px; border-radius:99px;
+    text-transform:uppercase;
+  }
+  .hero h1{
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height:1.05;
+    max-width:15ch;
+  }
+  .hero h1 .accent{ color:var(--gold-soft); font-style:italic; }
+  .hero p.lede{
+    max-width:620px; font-size:1.12rem; margin-top:26px; color:var(--text-dim);
+  }
+  .hero-actions{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
+  .btn{
+    font-family:'IBM Plex Mono',monospace; font-size:0.85rem; letter-spacing:0.02em;
+    padding:14px 24px; border-radius:var(--radius); text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s, background .2s, color .2s;
+  }
+  .btn-primary{ background:var(--gold); color:var(--ink); font-weight:600; }
+  .btn-primary:hover{ background:var(--gold-soft); transform:translateY(-1px); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--paper); }
+  .btn-ghost:hover{ border-color:var(--gold-soft); color:var(--gold-soft); }
+
+  .hero-facts{
+    margin-top:70px; display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid var(--line);
+  }
+  .hero-facts div{ padding:20px 22px 0; border-left:1px solid var(--line); }
+  .hero-facts div:first-child{ border-left:none; padding-left:0; }
+  .hero-facts .num{ font-family:'Newsreader',serif; font-style:italic; font-size:1.8rem; color:var(--gold-soft); display:block; }
+  .hero-facts .lbl{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-dimmer); }
+  @media (max-width:760px){
+    .hero-facts{ grid-template-columns:repeat(2,1fr); row-gap:24px; }
+    .hero-facts div:nth-child(3){ border-left:none; }
+  }
+
+  /* bridge signature svg */
+  .bridge-motif{
+    position:absolute; right:-4%; top:12%; width:56%; max-width:640px; opacity:0.9; z-index:1;
+    pointer-events:none;
+  }
+  @media (max-width: 980px){ .bridge-motif{ display:none; } }
+  .bridge-motif .pulse{ animation: pulseGlow 3.6s ease-in-out infinite; }
+  @keyframes pulseGlow{
+    0%,100%{ opacity:0.35; }
+    50%{ opacity:1; }
+  }
+  .bridge-motif .draw{
+    stroke-dasharray: 6 6;
+    animation: dash 26s linear infinite;
+  }
+  @keyframes dash{ to{ stroke-dashoffset:-240; } }
+
+  /* ---------- about ---------- */
+  .about{ background:var(--ink-2); border-bottom:1px solid var(--line); }
+  .about-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:64px; align-items:start; }
+  @media (max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+  .about-grid p{ margin:0 0 18px; }
+  .funders{ display:flex; gap:14px; flex-wrap:wrap; margin-top:26px; }
+  .funder-badge{
+    border:1px solid var(--line); padding:14px 16px; font-family:'IBM Plex Mono',monospace;
+    font-size:0.76rem; color:var(--text-dim); display:flex; align-items:center; gap:10px;
+  }
+  .funder-badge .dot{ width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+
+  .notice-card{
+    background:var(--ink); border:1px solid var(--line); padding:28px;
+    border-left:3px solid var(--clay);
+  }
+  .notice-card .eyebrow{ color:var(--clay); }
+  .notice-card p{ font-size:0.95rem; color:var(--text-dim); margin:14px 0 0; }
+
+  /* ---------- committee ---------- */
+  .committee{ background:var(--ink); }
+  .comm-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:860px){ .comm-cols{ grid-template-columns:1fr; } }
+  .comm-col{ background:var(--ink); padding:34px 30px; }
+  .comm-col h3{ font-size:1.15rem; margin-bottom:6px; }
+  .comm-col .eyebrow{ display:block; margin-bottom:14px; }
+  .person{ padding:14px 0; border-top:1px solid var(--line); }
+  .person:first-of-type{ border-top:none; margin-top:6px; }
+  .person .pname{ color:var(--paper); font-weight:600; font-size:0.98rem; }
+  .person .paff{ color:var(--text-dimmer); font-size:0.86rem; margin-top:2px; }
+
+  /* ---------- program / agenda ---------- */
+  .program{ background:var(--ink-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+  .tabs{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:36px;
+    scrollbar-width:thin;
+  }
+  .tab{
+    flex:0 0 auto; background:none; border:1px solid var(--line); color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; padding:12px 16px; cursor:pointer;
+    text-align:left; min-width:132px; transition:border-color .2s, background .2s, color .2s;
+  }
+  .tab .d{ display:block; color:var(--paper); font-size:0.88rem; font-weight:600; }
+  .tab .t{ display:block; margin-top:3px; color:var(--text-dimmer); font-size:0.72rem; }
+  .tab:hover{ border-color:var(--gold-soft); }
+  .tab.active{ background:var(--gold); border-color:var(--gold); color:var(--ink); }
+  .tab.active .d, .tab.active .t{ color:var(--ink); }
+
+  .day-panel{ display:none; }
+  .day-panel.active{ display:block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .day-heading{ display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:30px; }
+  .day-heading h3{ font-size:1.6rem; }
+  .day-heading .theme{ font-family:'IBM Plex Mono',monospace; color:var(--gold-soft); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em; }
+
+  .timeline{ position:relative; padding-left:28px; }
+  .timeline::before{
+    content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--line);
+  }
+  .tl-item{ position:relative; padding:0 0 26px 22px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:""; position:absolute; left:-27px; top:4px; width:9px; height:9px; border-radius:50%;
+    background:var(--ink-2); border:2px solid var(--gold-soft);
+  }
+  .tl-item.break::before{ border-color:var(--forest-soft); }
+  .tl-item .time{
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--gold-soft); letter-spacing:0.02em;
+  }
+  .tl-item.break .time{ color:var(--forest-soft); }
+  .tl-item .sess{ color:var(--paper); font-size:1rem; margin-top:5px; font-weight:500; }
+  .tl-item .spk{ color:var(--text-dimmer); font-size:0.85rem; margin-top:4px; }
+  .tl-item.break .sess{ color:var(--text-dim); font-weight:400; font-style:italic; }
+
+  /* ---------- info ---------- */
+  .info{ background:var(--ink); }
+  .info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:860px){ .info-grid{ grid-template-columns:1fr; } }
+  .info-card{ background:var(--ink); padding:36px 34px; }
+  .info-card h3{ font-size:1.3rem; margin-bottom:18px; }
+  .info-card ul{ margin:0; padding:0; list-style:none; }
+  .info-card li{
+    position:relative; padding:12px 0 12px 22px; border-top:1px solid var(--line); font-size:0.94rem;
+  }
+  .info-card li:first-child{ border-top:none; }
+  .info-card li::before{ content:"◆"; position:absolute; left:0; top:12px; color:var(--gold); font-size:0.6rem; }
+  .deadline{
+    display:inline-block; margin-left:4px; font-family:'IBM Plex Mono',monospace; font-size:0.78rem;
+    color:var(--clay); border-bottom:1px dashed var(--clay);
+  }
+
+  /* ---------- registration ---------- */
+  .register{ background:var(--ink-2); border-top:1px solid var(--line); }
+  .reg-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px; }
+  @media (max-width:760px){ .reg-grid{ grid-template-columns:1fr; } }
+  .reg-card{
+    border:1px solid var(--line); padding:32px; background:var(--ink);
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .reg-card h3{ font-size:1.25rem; }
+  .reg-card p{ font-size:0.92rem; color:var(--text-dim); margin:0; flex-grow:1; }
+  .reg-status{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--forest-soft); border:1px solid var(--forest-soft); padding:6px 12px; border-radius:99px;
+    align-self:flex-start;
+  }
+  .reg-note{
+    border-top:1px solid var(--line); padding-top:28px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;
+    justify-content:space-between;
+  }
+  .reg-note .cap{ font-family:'Newsreader',serif; font-style:italic; font-size:1.4rem; color:var(--paper); }
+  .reg-note .cap b{ color:var(--gold-soft); font-weight:600; font-style:normal; }
+
+  /* ---------- footer ---------- */
+  footer{ background:var(--ink); padding:60px 0 34px; }
+  .foot-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px; padding-bottom:40px; border-bottom:1px solid var(--line); }
+  @media (max-width:760px){ .foot-grid{ grid-template-columns:1fr; } }
+  .foot-grid h4{ font-size:1rem; color:var(--gold-soft); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
+  .foot-grid p, .foot-grid a{ font-size:0.9rem; color:var(--text-dim); text-decoration:none; }
+  .foot-grid a:hover{ color:var(--gold-soft); }
+  .foot-bottom{ display:flex; justify-content:space-between; padding-top:28px; flex-wrap:wrap; gap:12px; }
+  .foot-bottom p{ font-size:0.78rem; color:var(--text-dimmer); margin:0; font-family:'IBM Plex Mono',monospace; }
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site">
+  <div class="nav-row">
+    <a class="brandmark" href="#top">
+      <span class="mark">S·C</span>
+      <span class="name">SLAM<em>-CMP</em> 2027</span>
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#committee">Committee</a>
+      <a href="#program">Program</a>
+      <a href="#info">Track info</a>
+      <a href="#register" class="nav-cta">Registration</a>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero lattice-bg" id="top">
+    <svg class="bridge-motif" viewBox="0 0 520 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- crystal lattice cluster (left) -->
+      <g stroke="#d9a544" stroke-width="1" opacity="0.55">
+        <line x1="40" y1="60" x2="100" y2="40"/>
+        <line x1="100" y1="40" x2="150" y2="80"/>
+        <line x1="40" y1="60" x2="60" y2="130"/>
+        <line x1="60" y1="130" x2="150" y2="80"/>
+        <line x1="60" y1="130" x2="20" y2="190"/>
+        <line x1="150" y1="80" x2="170" y2="150"/>
+        <line x1="60" y1="130" x2="170" y2="150"/>
+      </g>
+      <g fill="#e9c67c">
+        <circle cx="40" cy="60" r="4"/>
+        <circle cx="100" cy="40" r="4"/>
+        <circle cx="150" cy="80" r="4"/>
+        <circle cx="60" cy="130" r="4"/>
+        <circle cx="20" cy="190" r="4"/>
+        <circle cx="170" cy="150" r="4"/>
+      </g>
+      <!-- bridge span -->
+      <path class="draw" d="M170 150 C 260 190, 320 190, 400 150" stroke="#f6f1e4" stroke-width="1.2" opacity="0.6"/>
+      <!-- neural network cluster (right) -->
+      <g stroke="#3c8562" stroke-width="1" opacity="0.6">
+        <line x1="400" y1="150" x2="440" y2="100"/>
+        <line x1="400" y1="150" x2="440" y2="150"/>
+        <line x1="400" y1="150" x2="440" y2="200"/>
+        <line x1="440" y1="100" x2="490" y2="120"/>
+        <line x1="440" y1="150" x2="490" y2="120"/>
+        <line x1="440" y1="150" x2="490" y2="180"/>
+        <line x1="440" y1="200" x2="490" y2="180"/>
+        <line x1="440" y1="100" x2="490" y2="180"/>
+      </g>
+      <g class="pulse" fill="#63a884">
+        <circle cx="400" cy="150" r="4.5"/>
+        <circle cx="440" cy="100" r="4"/>
+        <circle cx="440" cy="150" r="4"/>
+        <circle cx="440" cy="200" r="4"/>
+        <circle cx="490" cy="120" r="4"/>
+        <circle cx="490" cy="180" r="4"/>
+      </g>
+    </svg>
+
+    <div class="wrap">
+      <div class="hero-tag">
+        <span class="pill">Max Planck · Bridging Minds Africa</span>
+        <span class="pill">University of Dschang, Cameroon</span>
+      </div>
+      <h1>Where condensed&nbsp;matter physics <span class="accent">meets machine intelligence.</span></h1>
+      <p class="lede">SLAM-CMP 2027 is a seven-day residential school bringing together lattices and neural networks, physicists and machine-learning practitioners, Germany and Cameroon — one cohort of 70 at a time.</p>
+      <div class="hero-actions">
+        <a href="#register" class="btn btn-primary">Apply for a seat →</a>
+        <a href="#program" class="btn btn-ghost">See the full program</a>
+      </div>
+
+      <div class="hero-facts">
+        <div><span class="num">07</span><span class="lbl">Days, Dschang</span></div>
+        <div><span class="num">70</span><span class="lbl">Seats available</span></div>
+        <div><span class="num">Adv. BSc–PhD</span><span class="lbl">Eligible levels</span></div>
+        <div><span class="num">EN</span><span class="lbl">All sessions in English</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about lattice-bg" id="about">
+    <div class="wrap about-grid">
+      <div>
+        <span class="eyebrow">About the school</span>
+        <h2 style="margin-top:10px; font-size:clamp(1.7rem,3vw,2.2rem);">A school built as a bridge, not a syllabus</h2>
+        <p>SLAM-CMP 2027 — the School on Machine Learning and Artificial Intelligence for Many-body and Condensed Matter Physics — gathers advanced students and researchers at the University of Dschang for a week of lectures, hands-on labs, poster sessions and mentoring, moving from the foundations of quantum many-body physics through to neural quantum states, transformers, and physics-informed learning.</p>
+        <p>The school is organized under the Max Planck Society's <strong style="color:var(--paper);">"Bridging Minds"</strong> program, part of the wider Max Planck Africa initiative, connecting the Max Planck Institute for the Science of Light with the University of Dschang and the University of Buea.</p>
+        <div class="funders">
+          <div class="funder-badge"><span class="dot"></span>Max Planck Gesellschaft — lead funder</div>
+          <div class="funder-badge"><span class="dot"></span>MPI for the Science of Light — supplementary support</div>
+        </div>
+      </div>
+
+      <div class="notice-card">
+        <span class="eyebrow">Important notice</span>
+        <h3 style="font-size:1.1rem; margin-top:10px;">On names, photos &amp; materials</h3>
+        <p>Participant names and photographs will be published on the school's GitHub repository. The Max Planck Society may also use these materials for future promotional purposes. No other confidential data will be shared.</p>
+        <p>Questions about this policy can be directed to the main organizer — contact details are in the footer below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMITTEE -->
+  <section class="committee lattice-bg" id="committee">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">People</span>
+        <h2>Organizing committee</h2>
+        <p>The school is run by a joint German–Cameroonian–Canadian team spanning theory, experiment and machine learning.</p>
+      </div>
+
+      <div class="comm-cols">
+        <div class="comm-col">
+          <span class="eyebrow">Main organizer</span>
+          <h3>Direction</h3>
+          <div class="person">
+            <div class="pname">Lavoisier Wah</div>
+            <div class="paff">Max Planck Institute for the Science of Light, Germany</div>
+          </div>
+        </div>
+
+        <div class="comm-col">
+          <span class="eyebrow">Local organizing committee</span>
+          <h3>On the ground, Dschang</h3>
+          <div class="person">
+            <div class="pname">Prof. Christian Sadem</div>
+            <div class="paff">University of Dschang, Cameroon</div>
+          </div>
+          <div class="person">
+            <div class="pname">Prof. Clautilde Mofor</div>
+            <div class="paff">University of Dschang, Cameroon</div>
+          </div>
+        </div>
+
+        <div class="comm-col">
+          <span class="eyebrow">Scientific organizing committee</span>
+          <h3>Curriculum &amp; research</h3>
+          <div class="person">
+            <div class="pname">Dr. Estelle Inack</div>
+            <div class="paff">Perimeter Institute for Theoretical Physics, Canada</div>
+          </div>
+          <div class="person">
+            <div class="pname">Prof. Flore Kunst</div>
+            <div class="paff">Max Planck Institute for the Science of Light, Germany</div>
+          </div>
+          <div class="person">
+            <div class="pname">Prof. Lukong Fai</div>
+            <div class="paff">University of Buea, Cameroon</div>
+          </div>
+          <div class="person">
+            <div class="pname">Dr. Mathurin Ateuafack</div>
+            <div class="paff">University of Buea, Cameroon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAM -->
+  <section class="program lattice-bg" id="program">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Seven days</span>
+        <h2>Workshop agenda</h2>
+        <p>From foundations to frontiers — select a day to see sessions, speakers and times. All sessions are delivered in English.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Agenda days" id="tabs"></div>
+      <div id="panels"></div>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section class="info lattice-bg" id="info">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Tracks</span>
+        <h2>Additional information</h2>
+        <p>Two tracks run through the week — a hands-on machine learning track, and a state-of-the-art condensed matter physics lecture track.</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Machine learning track</h3>
+          <ul>
+            <li>A Slack workspace will be created for all communication prior to and during the school.</li>
+            <li>Lecture materials will be shared by instructors in the Slack workspace ahead of the school — participants are expected to review these in advance.</li>
+            <li>Two setup sessions will be organized before the school to help participants configure their computers. Exact dates will be communicated to registered attendees.</li>
+            <li>All slides and supplementary materials will be provided to participants — progressively or at the school's conclusion — and uploaded to the school's GitHub repository.</li>
+            <li>Lecturers are asked to submit materials to Lavoisier Wah no later than <span class="deadline">29 January 2027</span>.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3>Special track — state-of-the-art CMP lectures</h3>
+          <ul>
+            <li>Speakers are requested to submit the title and abstract of their talk no later than <span class="deadline">27 November 2026</span>.</li>
+            <li>Participants are encouraged to interrupt speakers at any time with questions, for an interactive, dynamic learning environment.</li>
+            <li>All talks present cutting-edge, state-of-the-art research in condensed matter physics.</li>
+            <li>Each talk includes roughly 10 minutes of introductory content, with the remainder given to the advanced, colloquium-style presentation.</li>
+            <li>Slides must be submitted to Lavoisier Wah no later than the day of the talk, to be uploaded to the school's GitHub repository.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="register lattice-bg" id="register">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Join the cohort</span>
+        <h2>Registration</h2>
+        <p>Open to advanced BSc, MSc and PhD students. Only 70 participants will be selected.</p>
+      </div>
+
+      <div class="reg-grid">
+        <div class="reg-card">
+          <span class="reg-status">Opening soon</span>
+          <h3>Present a poster</h3>
+          <p>For participants who would like to present a poster and be considered for the best-poster award (three awards presented on Day 6). Poster sessions run on Days 2 and 3.</p>
+        </div>
+        <div class="reg-card">
+          <span class="reg-status">Opening soon</span>
+          <h3>Attend only</h3>
+          <p>For participants who would like to attend the full school — lectures, hands-on labs, mentoring sessions and the research frontiers talks — without presenting a poster.</p>
+        </div>
+      </div>
+
+      <div class="reg-note">
+        <p class="cap"><b>70 seats</b> · Advanced BSc, MSc &amp; PhD</p>
+        <a href="#contact" class="btn btn-ghost">Get in touch about registration →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>SLAM-CMP 2027</h4>
+        <p>School on Machine Learning and Artificial Intelligence for Many-body and Condensed Matter Physics.<br>University of Dschang, Cameroon.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p><a href="mailto:lavoisier.wahkenounouh@mpl.mpg.de">lavoisier.wahkenounouh@mpl.mpg.de</a></p>
+        <p>Lavoisier Wah, Main Organizer<br>Max Planck Institute for the Science of Light</p>
+      </div>
+      <div>
+        <h4>Address</h4>
+        <p>Max-Planck-Institut für die Physik des Lichts<br>Staudtstraße 2, D-91058 Erlangen, Germany</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>Max Planck Gesellschaft · Universite de Dschang · MPI for the Science of Light</p>
+      <p>Funded through the "Bridging Minds" program, Max Planck Africa Initiative</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---- agenda data ----
+  const AGENDA = [
+    {
+      day: "Day 1", dow: "Mon", theme: "Foundations of Condensed Matter & ML",
+      items: [
+        ["08h00–08h50","Registrations and cards pick-up","Lavoisier Wah"],
+        ["09h00–09h30","Welcome & ice-breaker — presentations of the MPG and invited speakers","Lavoisier Wah"],
+        ["09h35–09h55","Presentation of University of Dschang (Faculty of Science, Physics dept., research groups/labs)","Prof. C. Sadem / Dean"],
+        ["09h55–10h10","Coffee break","Break room", "break"],
+        ["10h10–10h40","Spotlight talk on research at URMACETS","Prof. Christian Sadem"],
+        ["10h40–12h30","Introduction to quantum many-body physics","Dr. Ayan Banerjee"],
+        ["12h30–14h30","Lunch","Restaurant","break"],
+        ["14h35–15h35","Lecture 1 — Introduction to Machine Learning and AI (part 1)","Dr. Estelle Inack"],
+        ["15h35–15h50","Coffee break","Break room","break"],
+        ["15h50–17h30","Lecture 1 — Introduction to Machine Learning and AI (part 2)","Dr. Estelle Inack"],
+        ["17h45–19h45","Cultural welcome dinner for invited speakers","Restaurant","break"]
+      ]
+    },
+    {
+      day: "Day 2", dow: "Tue", theme: "Neural Networks for Physics",
+      items: [
+        ["09h00–10h00","Lecture 2 — Supervised & unsupervised learning; backpropagation; PyTorch primer (part 1)","Dr. Estelle Inack"],
+        ["10h00–10h15","Coffee break","Break room","break"],
+        ["10h15–11h15","Lecture 2 — Supervised & unsupervised learning; backpropagation; PyTorch primer (part 2)","Dr. Estelle Inack"],
+        ["11h15–11h30","Coffee break","Break room","break"],
+        ["11h30–12h30","Lecture 2 — Supervised & unsupervised learning; backpropagation; PyTorch primer (part 3)","Dr. Estelle Inack"],
+        ["12h30–14h30","Lunch","Restaurant","break"],
+        ["14h30–16h30","Hands-on lab 1 — Training neural networks on a simplistic model: phase classification","Dr. E. Inack / L. Wah"],
+        ["16h30–18h00","Poster session A","Students from UDs / MPL"],
+        ["18h00–20h00","Dinner","Restaurant","break"]
+      ]
+    },
+    {
+      day: "Day 3", dow: "Wed", theme: "Neural Network Quantum States",
+      items: [
+        ["09h00–10h00","Lecture 3 — Variational principle & neural quantum state ansätze (RBMs, MLP, RNN); case study of Transformers (part 1)","Dr. Estelle Inack"],
+        ["10h00–10h15","Coffee break","Break room","break"],
+        ["10h15–11h15","Lecture 3 — Variational principle & NQS ansätze; case study of Transformers (part 2)","Dr. Estelle Inack"],
+        ["11h15–11h30","Coffee break","Break room","break"],
+        ["11h30–12h30","Lecture 3 — Variational principle & NQS ansätze; case study of Transformers (part 3)","Dr. Estelle Inack"],
+        ["12h30–14h30","Lunch","Restaurant","break"],
+        ["14h30–16h30","Hands-on lab 2 — Implementing a neural network architecture: Transformers","Dr. E. Inack / L. Wah"],
+        ["16h30–17h00","Mentoring sessions / careers tips (10 min talk + 20 min Q&A)","Prof. Flore Kunst"],
+        ["17h00–18h00","Poster session B","Students from UDs / MPL"],
+        ["18h00–20h00","Dinner","Restaurant","break"]
+      ]
+    },
+    {
+      day: "Day 4", dow: "Thu", theme: "Advanced ML Methods",
+      items: [
+        ["09h00–10h00","Lecture 4 — Convolutional & graph neural networks for materials; physics-informed neural networks (part 1)","Prof. M. Hibbat-Allah / Prof. Florian Marquardt"],
+        ["10h00–10h15","Coffee break","Break room","break"],
+        ["10h15–11h15","Lecture 4 — CNNs, graph NNs for materials, physics-informed NNs (part 2)","Prof. M. Hibbat-Allah / Prof. Florian Marquardt"],
+        ["11h15–11h30","Coffee break","Break room","break"],
+        ["11h30–12h30","Lecture 4 — CNNs, graph NNs for materials, physics-informed NNs (part 3)","Prof. M. Hibbat-Allah / Prof. Florian Marquardt"],
+        ["12h30–14h30","Lunch","Restaurant","break"],
+        ["14h30–16h30","Hands-on lab 3 — CNN-based topological phase detection; group mini-project work begins","Dr. E. Inack / L. Wah"],
+        ["16h30–18h00","Networking, discussions & group mini-project work","Everyone"],
+        ["18h00–20h00","Dinner","Restaurant","break"]
+      ]
+    },
+    {
+      day: "Day 5", dow: "Fri", theme: "Research Frontiers & Group Projects",
+      items: [
+        ["09h00–09h45","Talk 1","Prof. Flore Kunst"],
+        ["09h45–10h30","Talk 2","Prof. Lukong Fai"],
+        ["10h30–10h45","Coffee break","Break room","break"],
+        ["10h45–11h15","Talk 3 — Many-body non-Hermitian physics meets machine learning and AI","Lavoisier Wah"],
+        ["11h15–11h45","Talk 4","Prof. Martin Tchoffo"],
+        ["11h45–12h00","Coffee break","Break room","break"],
+        ["12h00–12h30","Talk 5","Dr. Anumita Bose"],
+        ["12h30–14h30","Lunch","Restaurant","break"],
+        ["14h30–15h00","Talk 6","Prof. Michael Jipdi"],
+        ["15h00–15h30","Talk 7","Mr. N. Chakraborty"],
+        ["15h30–18h00","Group mini-project work & networking","Everyone"],
+        ["18h00–20h00","Dinner","Restaurant","break"]
+      ]
+    },
+    {
+      day: "Day 6", dow: "Sat", theme: "Presentations & Science Communication",
+      items: [
+        ["09h00–10h00","Group project presentations (10 min talk + 5 min Q&A per group); peer feedback, part 1","Everyone"],
+        ["10h00–10h15","Coffee break","Break room","break"],
+        ["10h15–11h15","Workshop on scientific writing & applying to international programmes (ARTEMIS, mobility grants, summer schools)","Lavoisier Wah / DPC"],
+        ["11h15–11h20","Best poster awards (3 students)","Prof. Flore Kunst, Prof. Christian Sadem"],
+        ["11h20–12h00","Closing reflection session: lessons learned, survey, next steps + coffee","Lavoisier Wah"],
+        ["12h00–13h00","Certificate ceremony","The Dean, Prof. Flore Kunst, Prof. Christian Sadem, Prof. Lukong Fai, Dr. Estelle Inack"],
+        ["14h00–20h00","Networking reception & closing cultural event — traditional dishes, dance, histories of Dschang, major Cameroonian cultures","Everyone"]
+      ]
+    },
+    {
+      day: "Day 7", dow: "Sun", theme: "Excursion & Farewell",
+      items: [
+        ["12h00–20h00","Full-day cultural excursion — e.g. Lake Barombi Mbo, Dschang Botanical Garden, Dschang Museum","Everyone"]
+      ]
+    }
+  ];
+
+  const tabsEl = document.getElementById('tabs');
+  const panelsEl = document.getElementById('panels');
+
+  AGENDA.forEach((d, i) => {
+    const tab = document.createElement('button');
+    tab.className = 'tab' + (i === 0 ? ' active' : '');
+    tab.setAttribute('role','tab');
+    tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    tab.dataset.index = i;
+    tab.innerHTML = `<span class="d">${d.day} · ${d.dow}</span><span class="t">${d.theme}</span>`;
+    tab.addEventListener('click', () => showDay(i));
+    tabsEl.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'day-panel' + (i === 0 ? ' active' : '');
+    panel.id = 'panel-' + i;
+
+    let itemsHTML = '<div class="timeline">';
+    d.items.forEach(it => {
+      const isBreak = it[3] === 'break';
+      itemsHTML += `
+        <div class="tl-item${isBreak ? ' break' : ''}">
+          <div class="time">${it[0]}</div>
+          <div class="sess">${it[1]}</div>
+          <div class="spk">${it[2]}</div>
+        </div>`;
+    });
+    itemsHTML += '</div>';
+
+    panel.innerHTML = `
+      <div class="day-heading">
+        <h3>${d.day} <span style="color:var(--text-dimmer); font-size:1rem;">— ${d.dow}</span></h3>
+        <span class="theme">${d.theme}</span>
+      </div>
+      ${itemsHTML}
+    `;
+    panelsEl.appendChild(panel);
+  });
+
+  function showDay(idx){
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      t.classList.toggle('active', i === idx);
+      t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    });
+    document.querySelectorAll('.day-panel').forEach((p,i) => {
+      p.classList.toggle('active', i === idx);
+    });
+  }
+</script>
+
+</body>
+</html>
