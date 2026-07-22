@@ -46,6 +46,7 @@ Participants are encouraged to interrupt speakers at any time to ask questions, 
 - Each talk should include approximately 10 minutes of introductory content to ensure a clear understanding of the foundational concepts, with the remainder of the time dedicated to the advanced presentation (colloquium style).
 - Slides for all talks must be submitted to Lavoisier Wah no later than the day of the talk, to be uploaded to the school's GitHub repository.
 
+For any other information, visit the school's website: <a href="https://kenounouh.github.io/SLAM-CMP-2027/" target="_blank">SLAM-CMP 2027</a>
 
 ## Important Notice: 
 Please note that participant names and photographs will be published on the school's GitHub repository. Additionally, the Max Planck Society may use these materials for future promotional purposes. No other confidential data will be shared.
