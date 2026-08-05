@@ -28,7 +28,7 @@ Prof. Lukong Fai – University of Buea, Cameroon
 
 Dr. Mathurin Ateuafack – University of Buea, Cameroon
 
-Dr. Florette Fobasso — MPI for the Physics Complex Systems, Germany
+Dr. Florette Fobasso — MPI for the Physics of Complex Systems, Germany
 
 Prof. Alain Fotue — University of Dschang, Cameroon
 
