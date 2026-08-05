@@ -28,6 +28,10 @@ Prof. Lukong Fai – University of Buea, Cameroon
 
 Dr. Mathurin Ateuafack – University of Buea, Cameroon
 
+Dr. Florette Fobasso — MPI for the Physics Complex Systems, Germany
+
+Prof. Alain Fotue — University of Dschang, Cameroon
+
 ## About the School
 
 The school has two main tracks:
